@@ -1,0 +1,131 @@
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import DatabasesServices from "../appwrite/configureappwrite";
+import { useSelector } from "react-redux";
+import Container from "../components/container/Container";
+import Button from "../components/Button";
+import parse from "html-react-parser";
+import Loading from "../components/Loading";
+import UserServices from "../appwrite/UserServices"
+
+
+function Post() {
+  const { slug } = useParams();
+  const [post, setpost] = useState({});
+  const navigate = useNavigate();
+  const userdata = useSelector((state) => state.userdata);
+  const [loading, setloading] = useState(true);
+  const [profiledata, setprofiledata] = useState({});
+  console.log(userdata);
+  let isauthor = post && userdata ? post.userid === userdata.$id : false;
+
+  useEffect(() => {
+    if (!slug) {
+      navigate("/home");
+    } else
+      try {
+        DatabasesServices.GetPost(slug)
+          .then((data) => {
+            if (data) {
+              setpost(data);
+              isauthor =post && userdata ? post.userid === userdata.$id : false;
+              UserServices.getProfile(data.userid).then((data)=>{
+                if(data){
+                  setprofiledata(data);
+                  console.log("j");
+                  setloading(false);
+                }
+              }).catch((e)=>console.log(e));
+              
+              
+              
+            } else {
+              navigate("/home");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) {
+        console.log("error in geting post" + error);
+      }
+  }, [slug, navigate]);
+
+  const DeletePost = () => {
+    if (post) {
+      DatabasesServices.DeletePost(post.$id)
+        .then((deletedpost) => {
+          if (deletedpost) {
+            const deletedfile = DatabasesServices.DeleteFile(post.articleimage);
+            if (deletedfile) {
+              console.log("ddd");
+
+              navigate("/home");
+            }
+          }
+        })
+        .catch((error) => console.log(error));
+    }
+  };
+
+  const EditPost = () => {
+    if (post) {
+      navigate(`/editpost/${post.$id}`);
+    }
+  };
+
+  if (loading) {
+    return (<Container>
+        <Loading/>
+    </Container>)
+  }else{
+    return (
+    post ? (
+        <Container>
+          <div className="flex gap-2 p-3 rounded-md  flex-col bg-indigo-950">
+          {isauthor && (
+                <div className="">
+                  <Link>
+                    <Button
+                      bgColor="bg-green-500"
+                      onClick={EditPost}
+                      className="mr-3"
+                    >
+                      Edit
+                    </Button>
+                  </Link>
+                  <Button bgColor="bg-red-500" onClick={DeletePost}>
+                    Delete
+                  </Button>
+                </div>
+              )}
+           <Link className='flex gap-2 items-center' to={`/profile/${post.userid}`}>
+          <img className='w-10 h-10 rounded-full' src={UserServices.PreviewProfilePhoto(profiledata.profilephoto)} alt="" />
+          <h1 className='text-lg text-white font-bold'>{profiledata? profiledata.username:"profile not found"}</h1>
+
+          </Link>
+            <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
+              <img
+                src={DatabasesServices.PreviewFile(post.articleimage)}
+                alt={post.title}
+                className="rounded-xl w-64 h-64"
+              />
+    
+              
+            </div>
+            <div className="flex flex-col gap-3 text-white">
+              <div className="w-full">
+                <h1 className="text-2xl font-bold">{post.title}</h1>
+              </div>
+              <div className="browser-css overflow-y-scroll h-10 ">{parse(String(post.content))}</div>
+            </div>
+          </div>
+        </Container>
+      ) : null)
+
+  }
+
+  
+}
+
+export default Post;
