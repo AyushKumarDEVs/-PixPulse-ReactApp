@@ -18,12 +18,14 @@ import Profile from './pages/Profile.jsx'
 import EditProfile from './pages/EditProfile.jsx'
 import Following from './pages/Following.jsx'
 import Followers from './pages/Followers.jsx'
+import Container from './components/container/Container.jsx'
 
 const router=createBrowserRouter([
   {
     path:"/",
     element:<App/>,
     children:[
+     
       {
         path:"/home",
         element:<Home/>

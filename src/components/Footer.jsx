@@ -5,7 +5,7 @@ import Logo from './Logo';
 import { Link } from 'react-router-dom';
 import Logoutbtn from './Logoutbtn';
 function Footer() {
-    const islogedin=useSelector((state)=>state.isLogedin);
+  const islogedin=(useSelector((state)=>state.auth)).isLogedin;
   
     const navitems=[
       {

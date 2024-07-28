@@ -13,7 +13,7 @@ function Post() {
   const { slug } = useParams();
   const [post, setpost] = useState({});
   const navigate = useNavigate();
-  const userdata = useSelector((state) => state.userdata);
+  const userdata = (useSelector((state) => state.auth)).userdata;
   const [loading, setloading] = useState(true);
   const [profiledata, setprofiledata] = useState({});
   console.log(userdata);

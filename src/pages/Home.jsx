@@ -8,22 +8,24 @@ import { Link } from 'react-router-dom';
 
 function Home() {
     const [posts, setposts] = useState([]);
+    const postslice=useSelector(state=>state.postslice);
     const [loading, setloading] = useState(true);
-    const isLogedin=useSelector(state=>state.isLogedin)
-    console.log(isLogedin)
+    const isLogedin=useSelector((state)=>state.auth).isLogedin;
     useEffect(()=>{
-       DatabasesServices.getPosts(true).then((data)=>{
-        if(data){
-            setposts(data.documents.reverse());
-            console.log(data.documents);
-            setloading(false);
-        }
-       }).catch((error)=>{
-        console.log("error:"+error);
-       })
-    },[setposts])
+        if(postslice.AllActivePosts){
+            if(postslice.AllActivePosts.length>0){
+                setposts(postslice.AllActivePosts);
+                setloading(false);
+    
+            }
+           
+        }else{
+            setloading(true);
 
-    if(loading&&isLogedin){
+        }
+    },[postslice.AllActivePosts])
+
+    if(loading){
         return (
             <Container>
                 <Loading/>
@@ -46,7 +48,7 @@ function Home() {
         )
     }
 
-    if(posts.length<=0){
+    if(posts.length<0){
         return <Container>
             <h1>No Active Post Add your's 😄</h1>
            

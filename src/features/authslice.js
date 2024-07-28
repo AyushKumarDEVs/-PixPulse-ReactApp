@@ -5,16 +5,27 @@ const AuthSlice=createSlice({
     initialState:{
         isLogedin:false,//status
         userdata:null,
+        userprofile:{},
+        usserposts:[],
         
     },
 
     reducers:{
 
         userLogin:(state,action)=>{
+            
             state.userdata=action.payload.userdata;
             state.isLogedin=true;
             
 
+        },
+
+        setuserprofile(state,action){
+            state.userprofile=action.payload;
+        },
+
+        setuserposts(state,action){
+            state.usserposts=action.payload.userposts;
         },
 
         userLogout: (state,action)=>{
@@ -26,6 +37,6 @@ const AuthSlice=createSlice({
 
 })
 
-export const {userLogin,userLogout}=AuthSlice.actions;
+export const {userLogin,userLogout,setuserposts,setuserprofile}=AuthSlice.actions;
 
 export default AuthSlice.reducer;

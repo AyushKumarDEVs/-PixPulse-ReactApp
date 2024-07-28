@@ -22,7 +22,7 @@ export default function PostForm({ post, slug }) {
   } = useForm({});
 
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.userdata);
+  const userData = (useSelector((state) => state.auth)).userdata;
   const [loading, setloading] = useState(true);
   const [Image, setImage] = useState(null);
   const date = new Date();
@@ -61,7 +61,7 @@ export default function PostForm({ post, slug }) {
           });
           if (dbPost) {
             setloading(false);
-
+            
             navigate(`/post/${dbPost.$id}`);
           } else {
             setloading(false);
@@ -172,7 +172,7 @@ export default function PostForm({ post, slug }) {
             </div>
            
 
-            <div className="bg-red-900">
+            <div className="">
             { post&&!Image? 
             (
                 
