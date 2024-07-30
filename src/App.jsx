@@ -14,11 +14,13 @@ import { setAllActivePosts, setAllPosts } from "./features/PostsSlice.js";
 function App() {
 
   const[loading,setloading]=useState(true);
+  const [isLogedin, setisLogedin] = useState(false);
   const dispatch=useDispatch();
   const navigate=useNavigate();
   useEffect(()=>{
     authservice.GetCurrentUser().then((data)=>{
       if(data){
+        setisLogedin(true);
         console.log(data);
         console.log("D")
           dispatch(userLogin({userdata:data}));
@@ -54,6 +56,8 @@ function App() {
       }else{
         
         dispatch(userLogout());
+        setisLogedin(false);
+        navigate("/root");
         
       }
     }).finally(()=>{
@@ -69,7 +73,7 @@ function App() {
         <main className="w-full h-main   bg-slate-900 ">
           <Outlet />
         </main>
-        <Footer />
+        {isLogedin&&<Footer />}
     </div>
   ) : (
     <Container>

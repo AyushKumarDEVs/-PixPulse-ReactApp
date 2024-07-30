@@ -8,6 +8,7 @@ import parse from "html-react-parser";
 import Loading from "../components/Loading";
 import UserServices from "../appwrite/UserServices"
 import { setAllActivePosts, setAllPosts } from "../features/PostsSlice";
+import { setuserposts } from "../features/authslice";
 
 
 function Post() {
@@ -64,6 +65,8 @@ function Post() {
           if (deletedpost) {
             const deletedfile = DatabasesServices.DeleteFile(post.articleimage);
             if (deletedfile) {
+              dispatch(setuserposts({userposts:postslice.usserposts.filter((each)=>each.$id!=post.$id)}));
+
               if(post.status==="active"){
                 dispatch(setAllActivePosts({AllActivePosts:postslice.AllActivePosts.filter((each)=>each.$id!=post.$id)}));
                 dispatch(setAllPosts({AllPosts:postslice.AllPosts.filter((each)=>each.$id!=post.$id)}));

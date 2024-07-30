@@ -11,6 +11,7 @@ import { ID } from "appwrite";
 import Loading from "./Loading.jsx";
 import Container from "./container/Container.jsx";
 import { setAllActivePosts, setAllPosts } from "../features/PostsSlice.js";
+import { setuserposts } from "../features/authslice.js";
 
 export default function PostForm({ post, slug }) {
   const {
@@ -24,6 +25,8 @@ export default function PostForm({ post, slug }) {
 
   const navigate = useNavigate();
   const userData = (useSelector((state) => state.auth)).userdata;
+  const usserposts = (useSelector((state) => state.auth)).usserposts;
+
   const postslice = (useSelector((state) => state.postslice));
   const dispatch=useDispatch();
 
@@ -65,6 +68,7 @@ export default function PostForm({ post, slug }) {
           });
           if (dbPost) {
             setloading(false);
+            dispatch(setuserposts({userposts:[dbPost,...usserposts]}));
             if(data.status==="active"){
               dispatch(setAllActivePosts({AllActivePosts:[dbPost,...postslice.AllActivePosts]}));
               dispatch(setAllPosts({AllPosts:[dbPost,...postslice.AllPosts]}));

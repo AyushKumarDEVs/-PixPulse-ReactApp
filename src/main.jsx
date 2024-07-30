@@ -25,7 +25,10 @@ const router=createBrowserRouter([
     path:"/",
     element:<App/>,
     children:[
-     
+      {
+        path:"/root/",
+        element:<Container children={<h1 className='text-2xl text-white'>Log in to continue</h1>}/>
+      },
       {
         path:"/home",
         element:<Home/>

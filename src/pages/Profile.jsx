@@ -3,7 +3,7 @@ import Container from "../components/container/Container";
 import Loading from "../components/Loading";
 import { useSelector } from "react-redux";
 import UserServices from "../appwrite/UserServices";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DatabasesServices from "../appwrite/configureappwrite";
 import PostCard from "../components/PostCard";
 import Button from "../components/Button";
@@ -19,6 +19,7 @@ function Profile() {
   const [isfollowing, setisfollowing] = useState(false);
   const [followers, setfollowers] = useState(0);
   const isauthor = id ? id === LogedinUserProfile.$id : true;
+  const navigate=useNavigate();
   //make it true by default
 
   function onClickFollow() {
@@ -95,10 +96,12 @@ function Profile() {
         .catch((error) => {
           console.log(error);
         });
-    } else {
+    } else if(LogedinUserProfile){
     
             setprofiledata(LogedinUserProfile);
           
+    }else{
+      navigate("/profile");
     }
   }, [LogedinUserProfile,id]);
 

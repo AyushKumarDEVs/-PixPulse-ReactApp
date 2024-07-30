@@ -5,7 +5,7 @@ const AuthSlice=createSlice({
     initialState:{
         isLogedin:false,//status
         userdata:null,
-        userprofile:{},
+        userprofile:null,
         usserposts:[],
         
     },

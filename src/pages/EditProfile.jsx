@@ -6,10 +6,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import UserServices from "../appwrite/UserServices";
 import { useDispatch, useSelector } from "react-redux";
 import authservice from "../appwrite/auth";
+import { data } from "autoprefixer";
 
 function EditProfile() {
   const [loading, setloading] = useState(true);
   const { register, handleSubmit } = useForm();
+  const {profileid}=useParams();
   const userprofile=useSelector(state=>state.auth).userprofile;
   const [profiledata, setprofiledata] = useState({});
   const [Image, setImage] = useState(null);
@@ -83,8 +85,18 @@ function EditProfile() {
   };
 
   useEffect(()=>{
-    setprofiledata(userprofile);
-    setloading(false);
+    if(userprofile){
+      setprofiledata(userprofile)
+      setloading(false);
+
+    }else{
+      UserServices.getProfile(profileid).then((data)=>{
+        if(data){
+          setprofiledata(data);
+          
+        }
+      })
+    }
 
       
   },[userprofile])
