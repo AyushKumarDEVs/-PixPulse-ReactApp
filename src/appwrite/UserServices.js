@@ -38,7 +38,7 @@ class userservices{
                     profilephoto,
                     username,
                     email,
-                    followers
+                    followers,
                    
                 }
             )

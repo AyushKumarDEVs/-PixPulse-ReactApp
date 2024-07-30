@@ -10,8 +10,7 @@ import authservice from "../appwrite/auth";
 function EditProfile() {
   const [loading, setloading] = useState(true);
   const { register, handleSubmit } = useForm();
-  const {profileid}=useParams();
-  const userdata=useSelector(state=>state.userdata);
+  const userprofile=useSelector(state=>state.auth).userprofile;
   const [profiledata, setprofiledata] = useState({});
   const [Image, setImage] = useState(null);
   const Navigate=useNavigate();
@@ -25,7 +24,7 @@ function EditProfile() {
               UserServices.CreateProfilePhoto(formdata.profilephoto[0]).then((data)=>{
                 if(data){
                   formdata.profilephoto=data.$id;
-                  UserServices.UpdateProfile({username:formdata.username,email:formdata.email,profilephoto:data.$id,userid:userdata.$id}).then((data)=>{
+                  UserServices.UpdateProfile({username:formdata.username,email:formdata.email,profilephoto:data.$id,userid:profiledata.$id}).then((data)=>{
                     if(data){
                       setloading(false);
 
@@ -35,12 +34,13 @@ function EditProfile() {
                 }
               })
             }else{
+              console.log(profiledata.profilephoto)
               UserServices.DeleteProfilePhoto(profiledata.profilephoto).then((data)=>{
                   if(data){
                     UserServices.CreateProfilePhoto(formdata.profilephoto[0]).then((data)=>{
                       if(data){
                         formdata.profilephoto=data.$id;
-                        UserServices.UpdateProfile({profilephoto:data.$id,userid:userdata.$id,username:formdata.username,email:formdata.email}).then((data)=>{
+                        UserServices.UpdateProfile({profilephoto:data.$id,userid:profiledata.$id,username:formdata.username,email:formdata.email}).then((data)=>{
                           if(data){
                             setloading(false);
 
@@ -54,7 +54,7 @@ function EditProfile() {
             }
            
           }else{
-            UserServices.UpdateProfile({username:formdata.username,email:formdata.email,profilephoto:profiledata.profilephoto,userid:userdata.$id}).then((data)=>{
+            UserServices.UpdateProfile({username:formdata.username,email:formdata.email,profilephoto:profiledata.profilephoto,userid:profiledata.$id}).then((data)=>{
               if(data){
                 setloading(false);
 
@@ -83,17 +83,11 @@ function EditProfile() {
   };
 
   useEffect(()=>{
-    
+    setprofiledata(userprofile);
+    setloading(false);
 
-        UserServices.getProfile(profileid).then((data)=>{
-            if(data){
-                console.log("profiledata"+data);
-
-                setprofiledata(data);
-                setloading(false);
-            }
-        }).catch((error)=>console.log(error))
-  },[])
+      
+  },[userprofile])
 
   if (loading) {
     return (
@@ -135,7 +129,7 @@ function EditProfile() {
           </div>
 
           <h3>
-            Userid : <span>{userdata ? userdata.$id : null}</span>
+            Userid : <span>{profiledata.$id}</span>
           </h3>
         </div>
         <button type="submit" className="bg-blue-600 p-2 rounded-lg">Update</button>

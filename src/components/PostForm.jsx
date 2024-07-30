@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DatabasesServices from "../appwrite/configureappwrite";
 import Input from "./Input";
@@ -10,6 +10,7 @@ import Button from "./Button.jsx";
 import { ID } from "appwrite";
 import Loading from "./Loading.jsx";
 import Container from "./container/Container.jsx";
+import { setAllActivePosts, setAllPosts } from "../features/PostsSlice.js";
 
 export default function PostForm({ post, slug }) {
   const {
@@ -23,6 +24,9 @@ export default function PostForm({ post, slug }) {
 
   const navigate = useNavigate();
   const userData = (useSelector((state) => state.auth)).userdata;
+  const postslice = (useSelector((state) => state.postslice));
+  const dispatch=useDispatch();
+
   const [loading, setloading] = useState(true);
   const [Image, setImage] = useState(null);
   const date = new Date();
@@ -61,7 +65,14 @@ export default function PostForm({ post, slug }) {
           });
           if (dbPost) {
             setloading(false);
-            
+            if(data.status==="active"){
+              dispatch(setAllActivePosts({AllActivePosts:[dbPost,...postslice.AllActivePosts]}));
+              dispatch(setAllPosts({AllPosts:[dbPost,...postslice.AllPosts]}));
+
+            }else{
+              dispatch(setAllPosts({AllPosts:[dbPost,...postslice.AllPosts]}));
+
+            }
             navigate(`/post/${dbPost.$id}`);
           } else {
             setloading(false);

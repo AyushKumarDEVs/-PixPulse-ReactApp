@@ -5,18 +5,26 @@ import { Link } from 'react-router-dom'
 import UserServices from "../appwrite/UserServices"
 import Loading from './Loading';
 import Container from './container/Container';
+import { data } from 'autoprefixer';
 function PostCard({$id, title, articleimage,userid}) {
     const [profiledata, setprofiledata] = useState({});
     const [loading, setloading] = useState(true);
-
+    const [Title, setTitle] = useState(title)
     
     useEffect(()=>{
-      UserServices.getProfile(userid).then((data)=>{
+      DatabasesServices.GetPost($id).then((data)=>{
         if(data){
-          setprofiledata(data);
-          setloading(false);
+          setTitle(data.title);
+          UserServices.getProfile(userid).then((data)=>{
+            if(data){
+              setprofiledata(data);
+              setloading(false);
+            }
+          }).catch((e)=>{console.log(e)
+        window.location.reload()});
         }
-      }).catch((e)=>console.log(e));
+      })
+      
       articleimage? DatabasesServices.PreviewFile(articleimage):null
     },[])
 
@@ -37,11 +45,11 @@ function PostCard({$id, title, articleimage,userid}) {
 
           </Link>
             <Link to={`/post/${$id}`} className= 'flex gap-3 flex-col justify-center w-full  '>
-                <img src={articleimage?DatabasesServices.PreviewFile(articleimage):null} alt={title}
+                <img src={articleimage?DatabasesServices.PreviewFile(articleimage):null} alt={Title}
                 className='rounded-xl w-full h-40' />
                  <h2
             className='text-xl font-bold'
-            >{title}</h2>
+            >{Title}</h2>
 
             </Link>
            

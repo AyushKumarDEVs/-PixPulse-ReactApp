@@ -16,9 +16,8 @@ export default function Following() {
         
         UserServices.listAllFollowers(id).then((data)=>{
             if(data){
-                for(let i=0;i<20;i++){
                     setfollowinglist(data.documents.reverse());
-                }
+                
                
                 setloading(false);
             }

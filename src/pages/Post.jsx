@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import DatabasesServices from "../appwrite/configureappwrite";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Container from "../components/container/Container";
 import Button from "../components/Button";
 import parse from "html-react-parser";
 import Loading from "../components/Loading";
 import UserServices from "../appwrite/UserServices"
+import { setAllActivePosts, setAllPosts } from "../features/PostsSlice";
 
 
 function Post() {
@@ -14,6 +15,10 @@ function Post() {
   const [post, setpost] = useState({});
   const navigate = useNavigate();
   const userdata = (useSelector((state) => state.auth)).userdata;
+  const dispatch=useDispatch();
+
+  const postslice = (useSelector((state) => state.postslice));
+
   const [loading, setloading] = useState(true);
   const [profiledata, setprofiledata] = useState({});
   console.log(userdata);
@@ -53,14 +58,22 @@ function Post() {
 
   const DeletePost = () => {
     if (post) {
+      
       DatabasesServices.DeletePost(post.$id)
         .then((deletedpost) => {
           if (deletedpost) {
             const deletedfile = DatabasesServices.DeleteFile(post.articleimage);
             if (deletedfile) {
-              console.log("ddd");
+              if(post.status==="active"){
+                dispatch(setAllActivePosts({AllActivePosts:postslice.AllActivePosts.filter((each)=>each.$id!=post.$id)}));
+                dispatch(setAllPosts({AllPosts:postslice.AllPosts.filter((each)=>each.$id!=post.$id)}));
+                navigate("/home");
 
-              navigate("/home");
+              }else{
+                dispatch(setAllPosts({AllPosts:postslice.AllPosts.filter((each)=>each.$id!=post.$id)}));
+                navigate("/home");
+
+              }
             }
           }
         })

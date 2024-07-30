@@ -12,42 +12,44 @@ function Profile() {
   const [loading, setloading] = useState(true);
   const [userPosts, setuserPosts] = useState([]);
   const [profiledata, setprofiledata] = useState({});
+  const LogedinUserProfile=useSelector(state=>state.auth).userprofile;
+  const LogedinUserPosts=useSelector(state=>state.auth).usserposts;
+
   const { id } = useParams();
-  const islogedin = useSelector((state) => state.islogedin);
-  const logedinuserdata = useSelector((state) => state.userdata);
   const [isfollowing, setisfollowing] = useState(false);
   const [followers, setfollowers] = useState(0);
-  const isauthor = id ? id === logedinuserdata.$id : true;
+  const isauthor = id ? id === LogedinUserProfile.$id : true;
   //make it true by default
 
   function onClickFollow() {
     setloading(true);
-    UserServices.CheckforFollowing(profiledata.$id, logedinuserdata.$id).then(
+    UserServices.CheckforFollowing(profiledata.$id, LogedinUserProfile.$id).then(
       (data) => {
         if (data) {
           if (data.documents.length > 0) {
             UserServices.DeleteFollower(data.documents[0].$id)
               .then((data) => {
                 if (data) {
-                  updatefollowers();
+                  updatefollowers(-1);
                   setisfollowing(false);
                   setloading(false);
                 }
               })
-              .finally((d) => setloading(false));
+              
           } else {
             
             UserServices.CreateFollower({
-              followerid: logedinuserdata.$id,
+              followerid: LogedinUserProfile.$id,
               followingid: profiledata.$id,
             })
               .then((data) => {
                 if (data) {
-                  updatefollowers();
+                  updatefollowers(1);
                   setisfollowing(true);
+                  setloading(false)
                 }
               })
-              .finally((d) => setloading(false));
+              
           }
         }
       }
@@ -56,7 +58,7 @@ function Profile() {
 
   function checkFollowers() {
     //checking for following
-    UserServices.CheckforFollowing(profiledata.$id, logedinuserdata.$id).then(
+    UserServices.CheckforFollowing(profiledata.$id, LogedinUserProfile.$id).then(
       (data) => {
         if (data) {
           if (data.documents.length > 0) {
@@ -70,18 +72,15 @@ function Profile() {
     );
   }
 
-  function updatefollowers() {
-    UserServices.listAllFollowers(profiledata.$id).then((data) => {
-      if (data) {
-        setfollowers(data.documents.length);
+  function updatefollowers(followerscount) {
         UserServices.UpdateProfile({
           ...profiledata,
           userid: profiledata.$id,
-          followers: data.documents.length,
-        }).then((data1) => {});
-      }
-    });
+          followers: followers+followerscount,
+        }).then((data1) => {setfollowers(data1.followers)});
+      
   }
+
 
   
   useEffect(() => {
@@ -97,32 +96,41 @@ function Profile() {
           console.log(error);
         });
     } else {
-      UserServices.getProfile(logedinuserdata.$id)
-        .then((data) => {
-          if (data) {
-            console.log("geted" + data.followersid);
-
-            setprofiledata(data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    
+            setprofiledata(LogedinUserProfile);
+          
     }
-  }, [id]);
+  }, [LogedinUserProfile,id]);
 
   useEffect(() => {
-    updatefollowers();
     checkFollowers();
-    DatabasesServices.getuserpost(profiledata.$id)
+    id?UserServices.listAllFollowers(profiledata.$id).then((data) => {
+      if (data) {
+        setfollowers(data.documents.length);
+        UserServices.UpdateProfile({
+          ...profiledata,
+          userid: profiledata.$id,
+          followers: data.documents.length,
+        }).then((data1) => {});
+      }
+    })
+    :
+    setfollowers(profiledata.followers);
+
+    id? DatabasesServices.getuserpost(profiledata.$id)
       .then((data) => {
         if (data) {
           setuserPosts(data.documents.reverse());
           console.log(data.documents);
+          setloading(false);
         }
       })
-      .finally((d) => setloading(false));
-  }, [profiledata]);
+    :
+    setuserPosts(LogedinUserPosts);
+    setloading(false);
+    console.log(LogedinUserPosts) 
+    
+  }, [profiledata,LogedinUserPosts]);
 
 
   if (loading) {
@@ -151,7 +159,7 @@ function Profile() {
             )}
 
             {isauthor ? (
-              <Link to={`/editprofile/${id ? id : logedinuserdata.$id}`}>
+              <Link to={`/editprofile/${id ? id : LogedinUserProfile.$id}`}>
                 🖋
               </Link>
             ) : null}
@@ -181,7 +189,7 @@ function Profile() {
               Email : <span>{profiledata.email}</span>
             </h3>
             <h3>
-              userid : <span>{id ? id : logedinuserdata.$id}</span>
+              userid : <span>{profiledata.$id}</span>
             </h3>
           </div>
           <div className="w-full  h-fit flex flex-col gap-4 items-center">

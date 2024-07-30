@@ -15,7 +15,6 @@ function App() {
 
   const[loading,setloading]=useState(true);
   const dispatch=useDispatch();
-  const userdata=useSelector(state=>state.userdata)
   const navigate=useNavigate();
   useEffect(()=>{
     authservice.GetCurrentUser().then((data)=>{
