@@ -93,7 +93,8 @@ function EditProfile() {
       UserServices.getProfile(profileid).then((data)=>{
         if(data){
           setprofiledata(data);
-          
+          setloading(false);
+
         }
       })
     }
