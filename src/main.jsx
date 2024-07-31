@@ -22,7 +22,7 @@ import Container from './components/container/Container.jsx'
 
 const router=createBrowserRouter([
   {
-    path:"/",
+    path:"/pix-pulse-react-app.vercel.app",
     element:<App/>,
     children:[
       {
