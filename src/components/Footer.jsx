@@ -38,7 +38,7 @@ function Footer() {
         <nav className='flex items-center justify-center fixed bottom-0 bg-black w-full h-fit py-2  text-white text-md'>
           
 
-          <ul className=' flex gap-10'>
+          <ul className=' flex gap-10'> 
           {
               navitems.map((e)=>(
                 e.active ? (
