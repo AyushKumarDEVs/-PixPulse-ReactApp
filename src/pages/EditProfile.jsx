@@ -121,14 +121,14 @@ function EditProfile() {
         </div>
         
         <div className="flex flex-col items-start gap-3">
-        <div className=" flex justify-between w-full p-1 ">
+        <div className=" flex  w-full p-1 h-fit flex-wrap ">
             <h3>
               Name :
             </h3>
             <input defaultValue={profiledata.username} className="text-center text-black bg-gray-200 rounded-md  font-medium h-fit p-1" type="text" {...register("username",{required:true})}></input>
        
           </div>
-          <div className=" flex justify-between w-full p-1">
+          <div className=" flex  w-full p-1 h-fit flex-wrap">
             <h3>
               Email :
             </h3>

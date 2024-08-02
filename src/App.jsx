@@ -66,11 +66,11 @@ function App() {
   },[navigate])
  
   return !loading ? (
-    <div className='w-screen h-screen flex flex-col content-between bg-gray-400'>
+    <div className='w-full h-screen flex flex-col items-center content-center  bg-gray-700'>
       
 
         <Header />
-        <main className="w-full h-main   bg-slate-900 ">
+        <main className="w-full h-full overflow-y-scroll  bg-slate-900 ">
           <Outlet />
         </main>
         {isLogedin&&<Footer />}

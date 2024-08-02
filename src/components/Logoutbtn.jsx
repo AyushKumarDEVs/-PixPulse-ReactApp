@@ -20,7 +20,7 @@ function Logoutbtn() {
         })
     }
   return (
-    <button className='hover:text-red-700' onClick={onLogoutbtnClick}>Logout</button>
+    <button className='hover:text-red-700 text-lg' onClick={onLogoutbtnClick}>Logout</button>
   )
 }
 

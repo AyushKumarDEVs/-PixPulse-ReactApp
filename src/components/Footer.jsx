@@ -35,8 +35,7 @@ function Footer() {
       },
     ]
   return (
-    <div>
-        <nav className='flex items-center justify-center px-2 py-2   bg-black w-full h-header text-white text-md'>
+        <nav className='flex items-center justify-center bg-black w-full h-fit py-1  text-white text-md'>
           
 
           <ul className=' flex gap-10'>
@@ -55,7 +54,6 @@ function Footer() {
           </ul>
         </nav>
     
-    </div>
   )
 }
 

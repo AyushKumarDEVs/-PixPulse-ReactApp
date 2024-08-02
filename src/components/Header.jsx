@@ -26,9 +26,8 @@ function Header() {
   ]
   return (
 
-    <header>
       
-        <nav className='flex items-center justify-between px-2  bg-black w-full h-header  text-white text-md'>
+        <nav className='flex items-center justify-between  bg-black w-full h-10 px-1 text-white text-md'>
           <div>
             <Link to={"/home"}>
 
@@ -59,7 +58,7 @@ function Header() {
           </ul>
         </nav>
 
-    </header>
+   
     
   )
 }
