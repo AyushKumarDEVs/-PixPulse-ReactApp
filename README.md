@@ -23,10 +23,13 @@ Welcome to **PixPulse**, a fully functional social media platform designed to pr
 - **State Management** 🧠
   - Robust state management across the application using [React Redux Toolkit](https://redux-toolkit.js.org/).
 
+## Demo 🎥
+
+Check out the live demo of PixPulse at [pix-pulse-react-app.vercel.app](https://pix-pulse-react-app.vercel.app).
+
 ## Contributing 🤝
 
 We welcome contributions to PixPulse! If you have ideas, suggestions, or improvements, please feel free to submit a pull request or open an issue. Your contributions are valuable and help make PixPulse better for everyone.
-
 
 ## Contact 📧
 
