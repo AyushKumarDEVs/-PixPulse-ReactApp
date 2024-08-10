@@ -10,6 +10,7 @@ import Container from "./components/container/Container.jsx";
 import UserServices from "./appwrite/UserServices.js";
 import DatabasesServices from "./appwrite/configureappwrite.js";
 import { setAllActivePosts, setAllPosts } from "./features/PostsSlice.js";
+import { SetAllProfile } from "./features/profileslice.js";
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           UserServices.getProfile(data.$id).then((profile)=>{
             if(profile){
               dispatch(setuserprofile(profile));
+              console.log("profile at app",profile)
               DatabasesServices.getuserpost(data.$id).then((data)=>{
                 if(data){
                   dispatch(setuserposts({userposts:data.documents.reverse()}))
@@ -39,7 +41,11 @@ function App() {
                         if(data){
                           
                           dispatch(setAllPosts({AllPosts:data.documents.reverse()}))
-                          
+                          UserServices.getAllProfile().then((data)=>{
+                            console.log("all profile",data.documents.reverse());
+                            dispatch(SetAllProfile({AllProfile:data.documents.reverse()}))
+                            setloading(false)
+                          }).catch(e=>console.log(e))
                         }
                       }).catch(e=>console.log(e));
                       

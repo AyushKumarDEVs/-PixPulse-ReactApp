@@ -10,7 +10,7 @@ export default {
         'header':"10vh",
         "main":"80vh",
         "postcard":"30vh",
-        "postcardPC":"50vh",
+        "postcardPC":"47vh",
         
       },
 

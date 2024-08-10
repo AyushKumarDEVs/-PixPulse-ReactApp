@@ -11,16 +11,18 @@ function AllPost() {
   const [loading, setloading] = useState(true);
   
   useEffect(()=>{
-    if(postslice.AllPosts){
+    if(postslice.AllPosts&&postlist.length<=0){
         if(postslice.AllPosts.length>0){
             setpostlist(postslice.AllPosts);
             setloading(false);
 
         }
        
+    }else if(postlist.length>0){
+        setloading(false);
+
     }else{
         setloading(true);
-
     }
 },[postslice.AllPosts])
 
@@ -33,7 +35,7 @@ function AllPost() {
 
     if(postlist.length<0){
         return <Container>
-            <h1>No post available Add your's 😄</h1>
+            <h1 className='text-white'>No post available Add your's 😄</h1>
         </Container>
     }
 

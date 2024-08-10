@@ -10,8 +10,9 @@ import Button from "./Button.jsx";
 import { ID } from "appwrite";
 import Loading from "./Loading.jsx";
 import Container from "./container/Container.jsx";
-import { setAllActivePosts, setAllPosts } from "../features/PostsSlice.js";
+import { setAllActivePosts, setAllPosts, updateallpost } from "../features/PostsSlice.js";
 import { setuserposts } from "../features/authslice.js";
+import { SetAllProfile } from "../features/profileslice.js";
 
 export default function PostForm({ post, slug }) {
   const {
@@ -47,6 +48,7 @@ export default function PostForm({ post, slug }) {
         });
 
         if (dbPost) {
+          dispatch(updateallpost({post:dbPost}))
           setloading(false);
           navigate(`/post/${dbPost.$id}`);
         }
@@ -210,6 +212,7 @@ export default function PostForm({ post, slug }) {
             options={["active", "inactive"]}
             label="Status"
             className="mb-4"
+            
             {...register("status", { required: true })}
           />
           <Button

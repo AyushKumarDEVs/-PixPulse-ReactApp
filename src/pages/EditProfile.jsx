@@ -7,6 +7,7 @@ import UserServices from "../appwrite/UserServices";
 import { useDispatch, useSelector } from "react-redux";
 import authservice from "../appwrite/auth";
 import { data } from "autoprefixer";
+import { setprofile } from "../features/profileslice";
 
 function EditProfile() {
   const [loading, setloading] = useState(true);
@@ -29,8 +30,9 @@ function EditProfile() {
                   UserServices.UpdateProfile({username:formdata.username,email:formdata.email,profilephoto:data.$id,userid:profiledata.$id}).then((data)=>{
                     if(data){
                       setloading(false);
-
-                      Navigate("/profile");
+                      console.log("data",data)
+                      dispatch(setprofile({profile:data}))
+                      Navigate(`/profile/${data}`);
                     }
                   })
                 }
@@ -45,8 +47,11 @@ function EditProfile() {
                         UserServices.UpdateProfile({profilephoto:data.$id,userid:profiledata.$id,username:formdata.username,email:formdata.email}).then((data)=>{
                           if(data){
                             setloading(false);
+                            console.log("data",data)
 
-                            Navigate("/profile");
+                            dispatch(setprofile({profile:data}))
+
+                            Navigate(`/profile/${data}`);
                           }
                         })
                       }
@@ -59,8 +64,10 @@ function EditProfile() {
             UserServices.UpdateProfile({username:formdata.username,email:formdata.email,profilephoto:profiledata.profilephoto,userid:profiledata.$id}).then((data)=>{
               if(data){
                 setloading(false);
+                console.log("data",data)
 
-                Navigate("/profile");
+                dispatch(setprofile({profile:data}))
+                Navigate(`/profile/${data}`);
               }
             })
           }
@@ -85,11 +92,13 @@ function EditProfile() {
   };
 
   useEffect(()=>{
+    setloading(true);
+
     if(userprofile){
       setprofiledata(userprofile)
       setloading(false);
 
-    }else{
+    }else if(profileid){
       UserServices.getProfile(profileid).then((data)=>{
         if(data){
           setprofiledata(data);
@@ -97,6 +106,8 @@ function EditProfile() {
 
         }
       })
+    }else{
+      setloading(true);
     }
 
       

@@ -12,18 +12,20 @@ function Home() {
     const [loading, setloading] = useState(true);
     const isLogedin=useSelector((state)=>state.auth).isLogedin;
     useEffect(()=>{
-        if(postslice.AllActivePosts){
-            if(postslice.AllActivePosts.length>0){
-                setposts(postslice.AllActivePosts);
+        if(postslice.AllPosts&&posts.length<=0){
+            if(postslice.AllPosts.length>0){
+                setposts(postslice.AllPosts.filter((each)=>each.status==="active"));
                 setloading(false);
     
             }
            
+        }else if(posts.length>0){
+            setloading(false);
+    
         }else{
             setloading(true);
-
         }
-    },[postslice.AllActivePosts])
+    },[postslice.AllPosts])
 
     if(loading){
         return (
@@ -48,9 +50,9 @@ function Home() {
         )
     }
 
-    if(posts.length<0){
+    if(posts.length<=0){
         return <Container>
-            <h1>No Active Post Add your's 😄</h1>
+            <h1 className='text-white'>No Active Post Add your's 😄</h1>
            
         </Container>
     }

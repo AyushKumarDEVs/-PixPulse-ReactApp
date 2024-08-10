@@ -127,6 +127,16 @@ class userservices{
         }
         
     }
+    async getAllProfile(){
+        try {
+            return await this.database.listDocuments(ConfigureEV.APPWRITE_DATABASE_ID,ConfigureEV.APPWRITE_ProfileCOLLECTION_ID
+               
+            )
+        } catch (error) {
+            console.log("error"+error);
+        }
+        
+    }
 
 
     async CreateProfilePhoto(file){
