@@ -33,7 +33,7 @@ We welcome contributions to PixPulse! If you have ideas, suggestions, or improve
 If you have any questions, suggestions, or just want to say hi, feel free to reach out:
 
 - **Email:** [ayushkumar2005sk@gmail.com](mailto:ayushkumar2005sk@gmail.com)
-- **GitHub:** [Ayush Kumar](https://github.com/yourusername)
+- **GitHub:** [Ayush Kumar](https://github.com/AyushKumarDEVs)
 
 ---
 
