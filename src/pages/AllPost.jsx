@@ -9,11 +9,13 @@ function AllPost() {
   const [postlist, setpostlist] = useState([]);
   const postslice=useSelector(state=>state.postslice);
   const [loading, setloading] = useState(true);
+  const userpost = useSelector((state) => state.auth).usserposts;
+
   
   useEffect(()=>{
     if(postslice.AllPosts&&postlist.length<=0){
         if(postslice.AllPosts.length>0){
-            setpostlist(postslice.AllPosts);
+            setpostlist([...postslice.AllPosts.filter((e)=>e.status==="Public"),...userpost.filter((e)=>e.status!=="Private")]);
             setloading(false);
 
         }
@@ -24,7 +26,7 @@ function AllPost() {
     }else{
         setloading(true);
     }
-},[postslice.AllPosts])
+},[postslice.AllPosts,userpost,])
 
     if(loading){
         return (<Container>
@@ -46,7 +48,7 @@ function AllPost() {
     
       <Container>
       <div className='flex  w-full  flex-col items-center h-full '>
-        <div className='flex  w-full  flex-col items-center h-full overflow-y-scroll'>
+        <div className='flex  w-full  flex-col items-center h-full mb-14 overflow-y-scroll'>
         {postlist.map((e) => (
               <div key={e.$id} className='p-2 bg-black '>
                   <PostCard $id={e.$id} userid={e.userid} articleimage={e.articleimage} title={e.title} />

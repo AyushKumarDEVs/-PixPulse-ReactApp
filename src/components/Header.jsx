@@ -39,7 +39,7 @@ function Header() {
           {
               navitems.map((e)=>(
                 e.active ? (
-                <Link key={e.name} className='flex items-center gap-10 hover:text-blue-900'   to={e.link}>
+                <Link key={e.name} className='flex items-center  text-lg gap-10 hover:text-blue-900 sm:text-sm'   to={e.link}>
                   {e.name }
                 </Link>
                 )

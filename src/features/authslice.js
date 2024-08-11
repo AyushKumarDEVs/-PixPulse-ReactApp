@@ -7,6 +7,8 @@ const AuthSlice=createSlice({
         userdata:null,
         userprofile:null,
         usserposts:[],
+        userfollowing:[],
+        userfollowers:[],
         
     },
 
@@ -28,6 +30,14 @@ const AuthSlice=createSlice({
             state.usserposts=action.payload.userposts;
         },
 
+        setuserfollowing(state,action){
+            state.userfollowing=action.payload.userfollowing;
+        },
+
+        setuserfollowers(state,action){
+            state.userfollowers=action.payload.userfollowers;
+        },
+
         userLogout: (state,action)=>{
             state.userdata=null;
             state.isLogedin=false;
@@ -37,6 +47,6 @@ const AuthSlice=createSlice({
 
 })
 
-export const {userLogin,userLogout,setuserposts,setuserprofile}=AuthSlice.actions;
+export const {userLogin,userLogout,setuserposts,setuserprofile,setuserfollowing,setuserfollowers}=AuthSlice.actions;
 
 export default AuthSlice.reducer;

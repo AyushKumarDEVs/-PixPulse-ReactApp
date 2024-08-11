@@ -29,6 +29,8 @@ function Login() {
               UserServices.getProfile(logindata.$id).then((profiledata) => {
                 if (profiledata) {
                   Navigate(`/editprofile/${logindata.$id}`);
+                  window.location.reload();
+
                 } else {
                   UserServices.CreateProfile({
                     username: logindata.name,
@@ -39,6 +41,8 @@ function Login() {
                     .then((data) => {
                       if (data) {
                         Navigate(`/editprofile/${logindata.$id}`);
+                        window.location.reload();
+
                         console.log("login data while login :" + logindata);
                       }
                     })
@@ -120,7 +124,7 @@ function Login() {
                 required: true,
               })}
             />
-            <span class="error-message w-60">Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.</span>
+            <span className="error-message w-60">Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.</span>
             {errors.password && <h3 className="text-red-800">This field is required</h3>}
 
             <Button type="submit" className="w-full">

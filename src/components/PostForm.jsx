@@ -71,14 +71,9 @@ export default function PostForm({ post, slug }) {
           if (dbPost) {
             setloading(false);
             dispatch(setuserposts({userposts:[dbPost,...usserposts]}));
-            if(data.status==="active"){
-              dispatch(setAllActivePosts({AllActivePosts:[dbPost,...postslice.AllActivePosts]}));
+            
               dispatch(setAllPosts({AllPosts:[dbPost,...postslice.AllPosts]}));
 
-            }else{
-              dispatch(setAllPosts({AllPosts:[dbPost,...postslice.AllPosts]}));
-
-            }
             navigate(`/post/${dbPost.$id}`);
           } else {
             setloading(false);
@@ -131,9 +126,10 @@ export default function PostForm({ post, slug }) {
     );
   } else
     return (
-      <form
+      <Container>
+         <form
         onSubmit={handleSubmit(submit)}
-        className="flex  gap-10 h-full  flex-col overflow-y-scroll items-center p-5 text-white"
+        className="flex  gap-10 h-full w-full flex-col overflow-y-scroll items-center p-5 mb-16 text-white"
       >
         <div className="w-fit px-2">
           <Input
@@ -209,7 +205,7 @@ export default function PostForm({ post, slug }) {
           </div>
 
           <Select
-            options={["active", "inactive"]}
+            options={["Public","Friends", "Private"]}
             label="Status"
             className="mb-4"
             
@@ -224,5 +220,8 @@ export default function PostForm({ post, slug }) {
           </Button>
         </div>
       </form>
+
+      </Container>
+     
     );
 }

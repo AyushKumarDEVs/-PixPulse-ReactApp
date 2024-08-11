@@ -32,7 +32,9 @@ function EditProfile() {
                       setloading(false);
                       console.log("data",data)
                       dispatch(setprofile({profile:data}))
-                      Navigate(`/profile/${data}`);
+                      Navigate(`/profile`);
+                      window.location.reload();
+
                     }
                   })
                 }
@@ -51,7 +53,10 @@ function EditProfile() {
 
                             dispatch(setprofile({profile:data}))
 
-                            Navigate(`/profile/${data}`);
+                            Navigate(`/profile`);
+                            window.location.reload();
+
+
                           }
                         })
                       }
@@ -67,7 +72,9 @@ function EditProfile() {
                 console.log("data",data)
 
                 dispatch(setprofile({profile:data}))
-                Navigate(`/profile/${data}`);
+                Navigate(`/profile`);
+                window.location.reload();
+
               }
             })
           }
@@ -94,11 +101,7 @@ function EditProfile() {
   useEffect(()=>{
     setloading(true);
 
-    if(userprofile){
-      setprofiledata(userprofile)
-      setloading(false);
-
-    }else if(profileid){
+   if(profileid){
       UserServices.getProfile(profileid).then((data)=>{
         if(data){
           setprofiledata(data);

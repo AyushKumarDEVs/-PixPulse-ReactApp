@@ -19,6 +19,7 @@ import EditProfile from './pages/EditProfile.jsx'
 import Following from './pages/Following.jsx'
 import Followers from './pages/Followers.jsx'
 import Container from './components/container/Container.jsx'
+import Friends from './pages/Friends.jsx'
 
 const router=createBrowserRouter([
   {
@@ -27,7 +28,7 @@ const router=createBrowserRouter([
     children:[
       {
         path:"/root/",
-        element:<Container children={<h1 className='text-2xl text-white'>Log in to continue</h1>}/>
+        element:<Container children={<h1 className='text-2xl text-white'>Welcome To Pix-Pulse</h1>}/>
       },
       {
         path:"/home",
@@ -88,6 +89,13 @@ const router=createBrowserRouter([
         path:"/following/:id/:username",
         element:
           <Following/>
+        
+      },
+
+      {
+        path:"/friends/:id/:username",
+        element:
+          <Friends/>
         
       },
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import {useDispatch, useSelector} from "react-redux"
-import { setuserposts, setuserprofile, userLogin, userLogout } from "./features/authslice";
+import { setuserfollowers, setuserfollowing, setuserposts, setuserprofile, userLogin, userLogout } from "./features/authslice";
 import  authservice  from "./appwrite/auth";
 import Header from "./components/Header";
 import Footer from './components/Footer.jsx'
@@ -19,17 +19,17 @@ function App() {
   const dispatch=useDispatch();
   const navigate=useNavigate();
   useEffect(()=>{
-    authservice.GetCurrentUser().then((data)=>{
-      if(data){
+    authservice.GetCurrentUser().then((loginuser)=>{
+      if(loginuser){
         setisLogedin(true);
-        console.log(data);
+        console.log(loginuser);
         console.log("D")
-          dispatch(userLogin({userdata:data}));
-          UserServices.getProfile(data.$id).then((profile)=>{
+          dispatch(userLogin({userdata:loginuser}));
+          UserServices.getProfile(loginuser.$id).then((profile)=>{
             if(profile){
               dispatch(setuserprofile(profile));
               console.log("profile at app",profile)
-              DatabasesServices.getuserpost(data.$id).then((data)=>{
+              DatabasesServices.getuserpost(loginuser.$id).then((data)=>{
                 if(data){
                   dispatch(setuserposts({userposts:data.documents.reverse()}))
                   DatabasesServices.getPosts(true).then((data)=>{
@@ -44,7 +44,21 @@ function App() {
                           UserServices.getAllProfile().then((data)=>{
                             console.log("all profile",data.documents.reverse());
                             dispatch(SetAllProfile({AllProfile:data.documents.reverse()}))
-                            setloading(false)
+                            UserServices.listAllFollowing(loginuser.$id).then((followinglist)=>{
+                              if(followinglist){
+                                dispatch(setuserfollowing({userfollowing:followinglist.documents}))
+                                console.log("follwoinglist",followinglist.documents);
+                                UserServices.listAllFollowers(loginuser.$id).then((data)=>{
+                                  if(data){
+                                    dispatch(setuserfollowers({userfollowers:data.documents}))
+                                    console.log(data.documents)
+                                    setloading(false)
+                                  }
+                                })
+                                
+                              }
+                            })
+                           
                           }).catch(e=>console.log(e))
                         }
                       }).catch(e=>console.log(e));
@@ -76,7 +90,7 @@ function App() {
       
 
         <Header />
-        <main className="w-full h-full overflow-y-scroll  bg-slate-900 ">
+        <main className="w-full h-full overflow-y-hidden   bg-slate-900 ">
           <Outlet />
         </main>
         {isLogedin&&<Footer />}
