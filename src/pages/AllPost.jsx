@@ -10,12 +10,13 @@ function AllPost() {
   const postslice=useSelector(state=>state.postslice);
   const [loading, setloading] = useState(true);
   const userpost = useSelector((state) => state.auth).usserposts;
+  const logedinuser = useSelector((state) => state.auth).userdata;
 
   
   useEffect(()=>{
-    if(postslice.AllPosts&&userpost.length>0){
+    if(postslice.AllPosts&&userpost.length>0&&logedinuser){
         if(postslice.AllPosts.length>0){
-            setpostlist([...postslice.AllPosts.filter((e)=>e.status==="Public"),...userpost.filter((e)=>e.status!=="Private")]);
+            setpostlist([...postslice.AllPosts.filter((e)=>e.status==="Public"&&e.userid!=logedinuser.$id),...userpost.filter((e)=>e.status!=="Private")]);
 
         }
         setloading(false);
