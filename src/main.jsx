@@ -27,9 +27,14 @@ const router=createBrowserRouter([
     element:<App/>,
     children:[
       {
+        path:"",
+        element:<Container children={<h1 className='text-2xl text-white'>Welcome To Pix-Pulse</h1>}/>
+      },
+      {
         path:"/root/",
         element:<Container children={<h1 className='text-2xl text-white'>Welcome To Pix-Pulse</h1>}/>
       },
+
       {
         path:"/home",
         element:<Home/>

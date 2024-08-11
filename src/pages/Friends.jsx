@@ -76,7 +76,7 @@ export default function Friends() {
                         
                     ))
                     :
-                    <h2> Loading Please Wait...</h2>
+                    friendslist.length<=0? <h2>{username} has No Friends 😥</h2> :<h2> Loading Please Wait...</h2>
                 }
                 </div>
                 
