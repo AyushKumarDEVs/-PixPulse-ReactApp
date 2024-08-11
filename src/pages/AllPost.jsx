@@ -13,20 +13,21 @@ function AllPost() {
 
   
   useEffect(()=>{
-    if(postslice.AllPosts&&postlist.length<=0){
+    if(postslice.AllPosts&&userpost.length>0){
         if(postslice.AllPosts.length>0){
             setpostlist([...postslice.AllPosts.filter((e)=>e.status==="Public"),...userpost.filter((e)=>e.status!=="Private")]);
-            setloading(false);
 
         }
+        setloading(false);
+
        
-    }else if(postlist.length>0){
+    }else if(postlist.length>=0){
         setloading(false);
 
     }else{
         setloading(true);
     }
-},[postslice.AllPosts,userpost,])
+},[postslice.AllPosts,userpost])
 
     if(loading){
         return (<Container>
@@ -35,7 +36,7 @@ function AllPost() {
     }
 
 
-    if(postlist.length<0){
+    if(postlist.length<=0){
         return <Container>
             <h1 className='text-white'>No post available Add your's 😄</h1>
         </Container>

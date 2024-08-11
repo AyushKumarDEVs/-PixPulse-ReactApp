@@ -21,7 +21,6 @@ function Home() {
   useEffect(() => {
     console.log("post" + userfollowing);
 
-    setloading(true)
     if (postslice.AllPosts&&userfollowing.length>=0&&userfollowers.length>=0) {
       let posttoshow = [];
       console.log(userfollowing)
@@ -66,9 +65,10 @@ function Home() {
         
         
         setposts([...friendspost,...publicpost,...userpost.filter((e)=>e.status!=="Private")]);
-        setloading(false);
        
       }
+      setloading(false);
+
     } else {
       setloading(true);
     }
