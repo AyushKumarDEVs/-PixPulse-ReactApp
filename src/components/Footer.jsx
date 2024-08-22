@@ -15,11 +15,7 @@ function Footer() {
       },
   
      
-      {
-        name:"All Posts",
-        link:"/all-posts",
-        active:islogedin,
-      },
+     
   
       {
         name:"Add Post",

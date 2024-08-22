@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
 import { Link } from "react-router-dom";
 import UserServices from "../appwrite/UserServices";
+import { setAllPosts } from "../features/PostsSlice";
 
 function Home() {
   const [posts, setposts] = useState([]);
@@ -14,65 +15,28 @@ function Home() {
   const logedinuser = useSelector((state) => state.auth);
   const userfollowing = useSelector((state) => state.auth).userfollowing;
   const userpost = useSelector((state) => state.auth).usserposts;
-
+  const dispatch=useDispatch();
   const userfollowers = useSelector((state) => state.auth).userfollowers;
 
 
   useEffect(() => {
     console.log("post" + userfollowing);
+   
+      DatabasesServices.getPosts(false).then((allpost)=>{
+        if(allpost)
+        dispatch(setAllPosts({AllPosts:allpost.documents}))
+        setposts(allpost.documents.filter((e)=>e.status==="Public").sort((a,b)=>{
+          if(a.$createdAt>b.$createdAt){
+            return -1;
+          }else return 1;
+        }));
+        setloading(false);
+      })
+  
+    
 
-    if (postslice.AllPosts&&userfollowing.length>=0&&userfollowers.length>=0) {
-      let posttoshow = [];
-      console.log(userfollowing)
-      if (postslice.AllPosts.length > 0) {
-        userfollowing.forEach((each) => {
-          postslice.AllPosts.forEach((post) => {
-            if (post.userid === each.followingid) {
-              console.log("xp",post.userid)
-              posttoshow.push(post); // Add matching posts to posttoshow
-              
-            }
-            // userfollowers.forEach((eachfollower)=>{
-            //     if(eachfollower.followerid===post.userid){
-                   
-            //         posttoshow.push(post.status==="Friends" ? post:null); // Add matching posts to posttoshow
-            
-            //     }
-            // })
-            // userfollowers.forEach((eachfollower)=>{
-            //     if(post.userid===eachfollower.followerid){
-            //         posttoshow.push(post.status==="Friends" ? post:[]); // Add matching posts to posttoshow
-
-            //     }
-            //   })
-          });
-          
-        });
-        let friendspost=[];//friends post of friends
-        let publicpost=posttoshow.filter((each)=>each.status==="Public");//public post of all following
-        userfollowers.forEach((eachfollower)=>{
-          posttoshow.forEach((eachpost)=>{
-            if(eachfollower.followerid===eachpost.userid){
-              if(eachpost.status==="Friends"){
-                friendspost.push(eachpost);
-              }
-              
-            }
-            })
-          })
-        
-          console.log(friendspost)
-        
-        
-        setposts([...friendspost,...publicpost,...userpost.filter((e)=>e.status!=="Private")]);
-       
-      }
-      setloading(false);
-
-    } else {
-      setloading(true);
-    }
-  }, [postslice.AllPosts,userfollowing,userfollowers]);
+ 
+  }, []);
 
   if (loading) {
     return (
@@ -98,7 +62,7 @@ function Home() {
   if (posts.length <= 0&!loading) {
     return (
       <Container>
-        <h1 className="text-white">No Active Post Add your's or try following people 😄</h1>
+        <h1 className="text-white">No Public Posts Available Add your's or try following people 😄</h1>
       </Container>
     );
   }

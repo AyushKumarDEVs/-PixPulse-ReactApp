@@ -15,6 +15,7 @@ function Post() {
   const [post, setpost] = useState({});
   const navigate = useNavigate();
   const userdata = useSelector((state) => state.auth).userdata;
+  const auth=useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const postslice = useSelector((state) => state.postslice);
@@ -65,7 +66,7 @@ function Post() {
             if (deletedfile) {
               dispatch(
                 setuserposts({
-                  userposts: postslice.usserposts.filter(
+                  userposts: auth.usserposts.filter(
                     (each) => each.$id != post.$id
                   ),
                 })
@@ -145,7 +146,7 @@ function Post() {
               src={UserServices.PreviewProfilePhoto(profiledata.profilephoto)}
               alt=""
             />
-            <h1 className="text-lg text-white font-bold">
+            <h1 className="text-lg text-white font-bold ">
               {profiledata ? profiledata.username : "profile not found"}
             </h1>
           </Link>
@@ -156,11 +157,11 @@ function Post() {
               className="rounded-xl w-64 h-64"
             />
           </div>
-          <div className="flex flex-col gap-3 text-white">
+          <div className="flex flex-col gap-3 text-white sm:flex-row">
             <div className="w-full">
-              <h1 className="text-2xl font-bold">{post.title}</h1>
+              <h1 className="text-2xl font-bold w-72 overflow-x-scroll">{post.title}</h1>
             </div>
-            <div className="browser-css overflow-y-scroll h-10 ">
+            <div className=" overflow-y-scroll h-52 ">
               {parse(String(post.content))}
             </div>
           </div>

@@ -11,7 +11,7 @@ export default function Friends() {
     const {username}=useParams();
     const [userfollowing, setuserfollowing] = useState([])
     const [userfollowers, setuserfollowers] = useState([])    
-    const [friendslist, setfriendslist] = useState([]);
+    const [friendslist, setfriendslist] = useState(null);
     const [loading, setloading] = useState(true);
 
     useEffect(()=>{
@@ -70,7 +70,7 @@ export default function Friends() {
                 {
                     
                    
-                    friendslist.length>0? friendslist.map((each)=>(
+                    friendslist!=null? friendslist.map((each)=>(
                         
                         <ProfileCard key={each} userid={each}/>
                         

@@ -143,7 +143,11 @@ function Profile() {
     });
       let friendspost=[];
       if (isauthor) {
-        setuserPosts(logedinuserpost);
+        setuserPosts([...logedinuserpost].sort((a,b)=>{
+          if(a.$createdAt>b.$createdAt){
+            return -1;
+          }else return 1;
+        }));
     } else {
         userfollowers.forEach((each) => {
            
@@ -157,18 +161,28 @@ function Profile() {
             
         });
         if(isfollowing){
-          setuserPosts([...friendspost,...publicpost])
+          setuserPosts([...friendspost,...publicpost].sort((a,b)=>{
+            if(a.$createdAt>b.$createdAt){
+              return -1;
+            }else return 1;
+          }))
 
         }else{
-          setuserPosts([...publicpost])
+          setuserPosts([...publicpost].sort((a,b)=>{
+            if(a.$createdAt>b.$createdAt){
+              return -1;
+            }else return 1;
+          }))
 
         }
        
 
         console.log(userfollowers) 
     }
+    console.log(userPosts)
+
     
-      
+    
         
 
       setloading(false);

@@ -61,7 +61,7 @@ export default function PostForm({ post, slug }) {
         : false;
       if (file) {
         try {
-          let slug = data.title + ID.unique();
+          let slug = ID.unique();
           const dbPost = await DatabasesServices.CreatePost({
             userid: userData.$id,
             articleimage: file.$id,

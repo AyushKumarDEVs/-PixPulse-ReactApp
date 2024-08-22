@@ -9,7 +9,7 @@ export default function Following() {
     const {id}=useParams();
     const {username}=useParams();
 
-    const [followinglist, setfollowinglist] = useState([]);
+    const [followinglist, setfollowinglist] = useState(null);
     const [loading, setloading] = useState(true);
 
     useEffect(()=>{
@@ -40,7 +40,7 @@ export default function Following() {
                 {
                     
                    
-                    followinglist.length>0? followinglist.map((each)=>(
+                    followinglist!=null? followinglist.map((each)=>(
                         
                         <ProfileCard key={each.followerid} userid={each.followerid}/>
                         
